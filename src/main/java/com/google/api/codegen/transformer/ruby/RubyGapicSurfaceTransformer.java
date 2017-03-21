@@ -26,6 +26,8 @@ import com.google.api.codegen.transformer.DynamicLangApiMethodTransformer;
 import com.google.api.codegen.transformer.FeatureConfig;
 import com.google.api.codegen.transformer.FileHeaderTransformer;
 import com.google.api.codegen.transformer.GrpcStubTransformer;
+import com.google.api.codegen.transformer.ImportSectionTransformer;
+import com.google.api.codegen.transformer.InitCodeTransformer;
 import com.google.api.codegen.transformer.ModelToViewTransformer;
 import com.google.api.codegen.transformer.ModelTypeTable;
 import com.google.api.codegen.transformer.PageStreamingTransformer;
@@ -56,10 +58,13 @@ public class RubyGapicSurfaceTransformer implements ModelToViewTransformer {
 
   private final GapicCodePathMapper pathMapper;
   private final PackageMetadataConfig packageConfig;
+  private final ImportSectionTransformer importSectionTransformer =
+      new RubyImportSectionTransformer();
   private final FileHeaderTransformer fileHeaderTransformer =
-      new FileHeaderTransformer(new RubyImportSectionTransformer());
+      new FileHeaderTransformer(importSectionTransformer);
   private final DynamicLangApiMethodTransformer apiMethodTransformer =
-      new DynamicLangApiMethodTransformer(new RubyApiMethodParamTransformer());
+      new DynamicLangApiMethodTransformer(
+          new RubyApiMethodParamTransformer(), new InitCodeTransformer(importSectionTransformer));
   private final ServiceTransformer serviceTransformer = new ServiceTransformer();
   private final GrpcStubTransformer grpcStubTransformer = new GrpcStubTransformer();
   private final PageStreamingTransformer pageStreamingTransformer = new PageStreamingTransformer();
@@ -93,7 +98,7 @@ public class RubyGapicSurfaceTransformer implements ModelToViewTransformer {
       ModelTypeTable modelTypeTable =
           new ModelTypeTable(
               new RubyTypeTable(apiConfig.getPackageName()),
-              new RubyModelTypeNameConverter(apiConfig.getPackageName()));
+              new RubySampleModelTypeNameConverter(apiConfig.getPackageName()));
       SurfaceTransformerContext context =
           SurfaceTransformerContext.create(
               service, apiConfig, modelTypeTable, namer, featureConfig);

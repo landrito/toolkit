@@ -121,7 +121,8 @@ public class RubyGapicSurfaceTestTransformer implements ModelToViewTransformer {
 
     OptionalArrayMethodView.Builder apiMethodView = initialApiMethodView.toBuilder();
 
-    InitCodeTransformer initCodeTransformer = new InitCodeTransformer();
+    InitCodeTransformer initCodeTransformer =
+        new InitCodeTransformer(new RubyImportSectionTransformer());
     InitCodeView initCodeView =
         initCodeTransformer.generateInitCode(
             context, testCaseTransformer.createSmokeTestInitContext(context));
@@ -138,7 +139,7 @@ public class RubyGapicSurfaceTestTransformer implements ModelToViewTransformer {
         apiConfig,
         new ModelTypeTable(
             new RubyTypeTable(apiConfig.getPackageName()),
-            new RubyModelTypeNameConverter(apiConfig.getPackageName())),
+            new RubySampleModelTypeNameConverter(apiConfig.getPackageName())),
         new RubySurfaceNamer(apiConfig.getPackageName()),
         new RubyFeatureConfig());
   }

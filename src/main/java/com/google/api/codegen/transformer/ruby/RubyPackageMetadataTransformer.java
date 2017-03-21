@@ -113,7 +113,7 @@ public class RubyPackageMetadataTransformer implements ModelToViewTransformer {
         apiConfig,
         new ModelTypeTable(
             new RubyTypeTable(apiConfig.getPackageName()),
-            new RubyModelTypeNameConverter(apiConfig.getPackageName())),
+            new RubySampleModelTypeNameConverter(apiConfig.getPackageName())),
         new RubySurfaceNamer(apiConfig.getPackageName()),
         new RubyFeatureConfig());
   }

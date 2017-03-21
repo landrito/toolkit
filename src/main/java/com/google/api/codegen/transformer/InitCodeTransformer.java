@@ -145,7 +145,7 @@ public class InitCodeTransformer {
       SingleResourceNameConfig resourceNameConfig =
           context.getSingleResourceNameConfig(fieldNamePattern.getValue());
       String apiWrapperClassName =
-          context.getNamer().getApiWrapperClassName(context.getInterfaceConfig());
+          context.getNamer().getPrefixedApiWrapperClassName(context.getInterfaceConfig());
       InitValueConfig initValueConfig =
           InitValueConfig.create(apiWrapperClassName, resourceNameConfig);
       mapBuilder.put(fieldNamePattern.getKey(), initValueConfig);
@@ -385,7 +385,7 @@ public class InitCodeTransformer {
         FormattedInitValueView.Builder initValue = FormattedInitValueView.newBuilder();
 
         initValue.apiWrapperName(
-            context.getNamer().getApiWrapperClassName(context.getInterfaceConfig()));
+            context.getNamer().getPrefixedApiWrapperClassName(context.getInterfaceConfig()));
         initValue.formatFunctionName(
             context
                 .getNamer()
