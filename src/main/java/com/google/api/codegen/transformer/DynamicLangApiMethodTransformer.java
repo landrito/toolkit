@@ -62,7 +62,7 @@ public class DynamicLangApiMethodTransformer {
     } else {
       apiMethod.type(ClientMethodType.OptionalArrayMethod);
     }
-    apiMethod.apiClassName(namer.getApiWrapperClassName(context.getInterfaceConfig()));
+    apiMethod.apiClassName(namer.getPrefixedApiWrapperClassName(context.getInterfaceConfig()));
     apiMethod.apiVariableName(namer.getApiWrapperVariableName(context.getInterfaceConfig()));
     apiMethod.apiModuleName(namer.getApiWrapperModuleName());
     InitCodeOutputType initCodeOutputType =

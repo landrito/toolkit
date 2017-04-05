@@ -26,16 +26,12 @@ describe "LibraryServiceSmokeTest" do
     end
     project_id = ENV["SMOKE_TEST_PROJECT"].freeze
 
-    Book = Google::Example::Library::V1::Book
-    FieldMask = Google::Protobuf::FieldMask
-    LibraryServiceClient = Library::V1::LibraryServiceClient
-    Rating = Google::Example::Library::V1::Book::Rating
-    UpdateBookRequest = Google::Example::Library::V1::UpdateBookRequest
+    LibraryV1 = Google::Example::Library::V1
 
-    library_service_client = LibraryServiceClient.new
-    formatted_name = LibraryServiceClient.book_path("testShelf-" + Time.new.to_i.to_s, project_id)
-    rating = Rating::GOOD
-    book = Book.new
+    library_service_client = LibraryV1::LibraryServiceClient.new
+    formatted_name = LibraryV1::LibraryServiceClient.book_path("testShelf-" + Time.new.to_i.to_s, project_id)
+    rating = LibraryV1::Book::Rating::GOOD
+    book = LibraryV1::Book.new
     book.rating = rating
     response = library_service_client.update_book(formatted_name, book)
   end

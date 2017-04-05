@@ -154,6 +154,16 @@ public class SurfaceNamer extends NameFormatterDelegator {
     return qualifiedName(namePath.withoutHead());
   }
 
+  /** The qualified namespace of the package of a protofile */
+  public String getNamespace(ProtoFile file) {
+    return qualifiedName(typeNameConverter.getNamePath(modelTypeFormatter.getFullNameFor(file)));
+  }
+
+  /** The nickname of the qualified namespace of a protofile. */
+  public String getNamespaceNickname(ProtoFile file) {
+    return getNotImplementedString("SurfaceNamer.getNamespaceNickname");
+  }
+
   /** The modules of the package. */
   public ImmutableList<String> getApiModules() {
     return ImmutableList.<String>of();
@@ -1268,5 +1278,9 @@ public class SurfaceNamer extends NameFormatterDelegator {
   public String getOptionalFieldDefaultValue(
       FieldConfig fieldConfig, MethodTransformerContext context) {
     return getNotImplementedString("SurfaceNamer.getOptionalFieldDefaultValue");
+  }
+
+  public String getPrefixedApiWrapperClassName(InterfaceConfig interfaceConfig) {
+    return getApiWrapperClassName(interfaceConfig);
   }
 }

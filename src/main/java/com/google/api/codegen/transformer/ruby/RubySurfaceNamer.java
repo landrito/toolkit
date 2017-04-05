@@ -40,6 +40,8 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /** The SurfaceNamer for Ruby. */
@@ -47,7 +49,7 @@ public class RubySurfaceNamer extends SurfaceNamer {
   public RubySurfaceNamer(String packageName) {
     super(
         new RubyNameFormatter(),
-        new ModelTypeFormatterImpl(new RubyModelTypeNameConverter(packageName)),
+        new ModelTypeFormatterImpl(new RubySampleModelTypeNameConverter(packageName)),
         new RubyTypeTable(packageName),
         new RubyCommentReformatter(),
         packageName);
@@ -264,5 +266,22 @@ public class RubySurfaceNamer extends SurfaceNamer {
       newNames.add(packageFilePathPiece(Name.upperCamel(name)));
     }
     return Joiner.on("/").join(newNames.toArray());
+  }
+
+  @Override
+  public String getPrefixedApiWrapperClassName(InterfaceConfig interfaceConfig) {
+    return getNamespaceNickname(interfaceConfig.getInterface().getFile())
+        + "::"
+        + getApiWrapperClassName(interfaceConfig);
+  }
+
+  @Override
+  public String getNamespaceNickname(ProtoFile file) {
+    LinkedList<String> scopeParts = new LinkedList<>(Arrays.asList(getNamespace(file).split("::")));
+    StringBuilder nickname = new StringBuilder();
+    for (int i = 0; i < 2 && !scopeParts.isEmpty(); i++) {
+      nickname.insert(0, scopeParts.removeLast());
+    }
+    return nickname.toString();
   }
 }
